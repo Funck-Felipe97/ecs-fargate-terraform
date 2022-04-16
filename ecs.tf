@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
   container_definitions = jsonencode([
     {
       name      = "aws-project-01"
-      image     = "1743953/aws-fargate-course:0.0.2"
+      image     = "1743953/aws-fargate-course:0.0.6"
       cpu       = 512
       memory    = 1024
       essential = true
@@ -38,6 +38,28 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
         {
           containerPort = 8080
           hostPort      = 8080
+        }
+      ]
+      environment: [
+        {
+          name  = "DB_DATABASE"
+          value = "aws_fargate_db"
+        },
+        {
+          name  = "DB_USERNAME"
+          value = "felipe"
+        },
+        {
+          name  = "DB_PASSWORD"
+          value = "felipe123"
+        },
+        {
+          name  = "DB_HOST"
+          value = aws_db_instance.mysql.endpoint
+        },
+        {
+          name  = "spring.profiles.active"
+          value = "test"
         }
       ]
     }

@@ -10,7 +10,7 @@ resource "aws_vpc" "aws-fargate-vpc" {
 resource "aws_subnet" "subnet-01" {
   vpc_id     = aws_vpc.aws-fargate-vpc.id
   cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-2a"
+  availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
   tags = {
     Name = "aws-fargate-vpc-subnet"
@@ -20,7 +20,7 @@ resource "aws_subnet" "subnet-01" {
 resource "aws_subnet" "subnet-02" {
   vpc_id     = aws_vpc.aws-fargate-vpc.id
   cidr_block = "10.0.2.0/24"
-  availability_zone = "us-east-2b"
+  availability_zone = "us-east-1b"
   map_public_ip_on_launch = true
   tags = {
     Name = "aws-fargate-vpc-subnet"

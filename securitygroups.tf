@@ -6,6 +6,25 @@ resource "aws_security_group" "ecs-task-01" {
   vpc_id = aws_vpc.aws-fargate-vpc.id
 }
 
+resource "aws_security_group" "rds-sg-01" {
+  vpc_id = aws_vpc.aws-fargate-vpc.id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 3306
+    to_port     = 3306
+    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.ecs-task-01.id]
+  }
+
+  egress {
+    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 65535
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_security_group_rule" "ingress-load-balancer-http-01" {
   from_port = 8080
   protocol = "tcp"
@@ -21,8 +40,7 @@ resource "aws_security_group_rule" "ingress-load-balancer-https-01" {
   protocol = "tcp"
   security_group_id = aws_security_group.load-balancer-01.id
   to_port = 443
-  cidr_blocks = [
-    "0.0.0.0/0"]
+  cidr_blocks = ["0.0.0.0/0"]
   type = "ingress"
 }
 
