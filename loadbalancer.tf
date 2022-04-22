@@ -24,11 +24,27 @@ resource "aws_lb_target_group" "ALBTG01" {
 
 resource "aws_lb_listener" "ALBL01" {
   load_balancer_arn = aws_lb.ALB01.arn
-  port              = "8080"
+  port              = "80"
   protocol          = "HTTP"
   default_action {
     target_group_arn = aws_lb_target_group.ALBTG01.arn
     type             = "forward"
   }
   depends_on = [aws_lb.ALB01]
+}
+
+resource "aws_lb_listener_rule" "ALBLR01" {
+  listener_arn = aws_lb_listener.ALBL01.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.ALBTG01.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/products-api/*"]
+    }
+  }
 }

@@ -26,10 +26,10 @@ resource "aws_security_group" "rds-sg-01" {
 }
 
 resource "aws_security_group_rule" "ingress-load-balancer-http-01" {
-  from_port = 8080
+  from_port = 80
   protocol = "tcp"
   security_group_id = aws_security_group.load-balancer-01.id
-  to_port = 8080
+  to_port = 80
   cidr_blocks = [
     "0.0.0.0/0"]
   type = "ingress"

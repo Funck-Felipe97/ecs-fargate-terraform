@@ -27,10 +27,11 @@ resource "aws_ecs_service" "service-01" {
 
 resource "aws_ecs_task_definition" "aws-project-task-01" {
   family                = "service-01"
+  task_role_arn         = aws_iam_role.ecs-products-events-role.arn
   container_definitions = jsonencode([
     {
       name      = "aws-project-01"
-      image     = "1743953/aws-fargate-course:1.0.0"
+      image     = "1743953/aws-fargate-course:1.0.2"
       cpu       = 512
       memory    = 1024
       essential = true
@@ -60,6 +61,10 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
         {
           name  = "spring.profiles.active"
           value = "prd"
+        },
+        {
+          name  = "aws.sns.topic.products.events"
+          value = aws_sns_topic.products-events.arn
         }
       ]
     }
