@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "service-02" {
   name               = "service-02"
   cluster            = aws_ecs_cluster.cluster-01.id
-  desired_count      = 2
+  desired_count      = 1
   task_definition    = aws_ecs_task_definition.aws-project-task-02.arn
   launch_type        = "FARGATE"  
   platform_version   = "1.4.0"
@@ -23,10 +23,11 @@ resource "aws_ecs_service" "service-02" {
 
 resource "aws_ecs_task_definition" "aws-project-task-02" {
   family                = "service-02"
+  task_role_arn         = aws_iam_role.ecs-products-events-role-2.arn
   container_definitions = jsonencode([
     {
       name      = "aws-project-02"
-      image     = "1743953/aws-fargate-course-events:1.0.0"
+      image     = "1743953/aws-fargate-course-events:1.0.1"
       cpu       = 512
       memory    = 1024
       essential = true
@@ -34,6 +35,16 @@ resource "aws_ecs_task_definition" "aws-project-task-02" {
         {
           containerPort = 8080
           hostPort      = 8080
+        }
+      ]
+      environment: [
+        {
+          name  = "spring.profiles.active"
+          value = "prd"
+        },
+        {
+          name  = "aws.sqs.queue.products.events"
+          value = aws_sqs_queue.products-events.id
         }
       ]
     }

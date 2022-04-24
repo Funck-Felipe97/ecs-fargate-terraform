@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "cluster-01" {
 resource "aws_ecs_service" "service-01" {
   name               = "service-01"
   cluster            = aws_ecs_cluster.cluster-01.id
-  desired_count      = 2
+  desired_count      = 1
   task_definition    = aws_ecs_task_definition.aws-project-task-01.arn
   launch_type        = "FARGATE"  
   platform_version   = "1.4.0"
@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
   container_definitions = jsonencode([
     {
       name      = "aws-project-01"
-      image     = "1743953/aws-fargate-course:1.0.2"
+      image     = "1743953/aws-fargate-course:1.0.3"
       cpu       = 512
       memory    = 1024
       essential = true

@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "ALBTG01" {
   health_check {
       enabled = true
       matcher = "200"
-      path    = "/actuator/health"
+      path    = "/products-api/actuator/health"
       port    = "8080"
   }
   depends_on = [aws_lb.ALB01]
@@ -33,7 +33,7 @@ resource "aws_lb_target_group" "ALBTG02" {
   health_check {
       enabled = true
       matcher = "200"
-      path    = "/actuator/health"
+      path    = "/events-api/actuator/health"
       port    = "8080"
   }
   depends_on = [aws_lb.ALB01]
