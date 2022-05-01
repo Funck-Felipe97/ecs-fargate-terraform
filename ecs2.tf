@@ -46,6 +46,10 @@ resource "aws_ecs_task_definition" "aws-project-task-02" {
         {
           name  = "aws.sqs.queue.products.events"
           value = aws_sqs_queue.products-events.id
+        },
+        {
+          name  = "aws.region"
+          value = "us-east-1"
         }
       ]
       logConfiguration = {

@@ -28,6 +28,7 @@ resource "aws_ecs_service" "service-01" {
 resource "aws_ecs_task_definition" "aws-project-task-01" {
   family                = "service-01"
   task_role_arn         = aws_iam_role.ecs-products-events-role.arn
+  execution_role_arn    = aws_iam_role.ecs-products-events-role.arn
   container_definitions = jsonencode([
     {
       name      = "aws-project-01"
@@ -67,6 +68,14 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
           value = aws_sns_topic.products-events.arn
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options   = {
+          awslogs-group         = "/fargate/service/products-api"
+          awslogs-region        = "us-east-1"
+          awslogs-stream-prefix = "products-api"
+        }
+      }
     }
   ])
   network_mode = "awsvpc"
