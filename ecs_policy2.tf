@@ -25,10 +25,19 @@ resource "aws_iam_role_policy" "ecs-products-events-policy-2" {
     Statement = [
       {
         Action = [
-          "sqs:ReceiveMessage",
-          "sqs:PurgeQueue",
-          "sqs:ListQueues",
-          "sqs:DeleteMessage"
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl",
+            "sqs:ListQueues",
+            "sqs:ChangeMessageVisibility",
+            "sqs:SendMessageBatch",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:ListQueueTags",
+            "sqs:ListDeadLetterSourceQueues",
+            "sqs:DeleteMessageBatch",
+            "sqs:ChangeMessageVisibilityBatch",
+            "sqs:SetQueueAttributes"
         ]
         Effect   = "Allow"
         Resource = aws_sqs_queue.products-events.arn
