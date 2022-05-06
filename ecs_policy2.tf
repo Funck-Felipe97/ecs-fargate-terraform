@@ -73,3 +73,21 @@ resource "aws_iam_role_policy" "ecs-products-events-policy-3" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "dynamodb-product-events-policy" {
+   name = "dynamodb-product-events-policy"
+   role = aws_iam_role.ecs-products-events-role-2.id
+   policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+       {
+            Action = [
+                "dynamodb:*"
+            ]
+            Effect = "Allow"
+            Resource = aws_dynamodb_table.products-events.arn
+        },
+        ]
+    })
+
+}
