@@ -61,3 +61,51 @@ resource "aws_iam_role_policy" "ecs-products-events-policy-4" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "ecs-products-events-policy-5" {
+  name = "ecs-products-events-policy-5"
+  role = aws_iam_role.ecs-products-events-role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl",
+            "sqs:ListQueues",
+            "sqs:ChangeMessageVisibility",
+            "sqs:SendMessageBatch",
+            "sqs:ReceiveMessage",
+            "sqs:SendMessage",
+            "sqs:GetQueueAttributes",
+            "sqs:ListQueueTags",
+            "sqs:ListDeadLetterSourceQueues",
+            "sqs:DeleteMessageBatch",
+            "sqs:ChangeMessageVisibilityBatch",
+            "sqs:SetQueueAttributes"
+        ]
+        Effect   = "Allow"
+        Resource = aws_sqs_queue.s3-invoice-events.arn
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ecs-products-events-policy-6" {
+  name = "ecs-products-events-policy-6"
+  role = aws_iam_role.ecs-products-events-role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+            "s3:*"
+        ]
+        Effect   = "Allow"
+        Resource = aws_s3_bucket.invoice-events.arn
+      },
+    ]
+  })
+}

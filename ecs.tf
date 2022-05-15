@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "aws-project-task-01" {
   container_definitions = jsonencode([
     {
       name      = "aws-project-01"
-      image     = "1743953/aws-fargate-course:1.0.3"
+      image     = "1743953/aws-fargate-course:1.0.7"
       cpu       = 512
       memory    = 1024
       essential = true
