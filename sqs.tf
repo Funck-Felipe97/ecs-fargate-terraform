@@ -41,24 +41,24 @@ resource "aws_sqs_queue_policy" "products-events-policy" {
 }
 
 ## S3 events sqs config
-resource "aws_sqs_queue" "s3-events-events" {
-  name                      = "s3-events-events"
+resource "aws_sqs_queue" "s3-invoice-events" {
+  name                      = "s3-invoice-events"
   delay_seconds             = 0
   max_message_size          = 2048
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
   redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.s3-events-events-dlq.arn
+    deadLetterTargetArn = aws_sqs_queue.s3-invoice-events-dlq.arn
     maxReceiveCount     = 3
   })
 }
 
-resource "aws_sqs_queue" "s3-events-events-dlq" {
-  name = "s3-events-events-dlq"
+resource "aws_sqs_queue" "s3-invoice-events-dlq" {
+  name = "s3-invoice-events-dlq"
 }
 
-resource "aws_sqs_queue_policy" "s3-events-events-policy" {
-  queue_url = aws_sqs_queue.s3-events-events.id
+resource "aws_sqs_queue_policy" "s3-invoice-events-policy" {
+  queue_url = aws_sqs_queue.s3-invoice-events.id
 
   policy = <<POLICY
             {
@@ -70,7 +70,7 @@ resource "aws_sqs_queue_policy" "s3-events-events-policy" {
                 "Effect": "Allow",
                 "Principal": "*",
                 "Action": "sqs:SendMessage",
-                "Resource": "${aws_sqs_queue.s3-events-events.arn}",
+                "Resource": "${aws_sqs_queue.s3-invoice-events.arn}",
                 "Condition": {
                     "ArnEquals": {
                     "aws:SourceArn": "${aws_sns_topic.s3-invoice-events.arn}"

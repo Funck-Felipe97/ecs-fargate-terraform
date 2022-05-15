@@ -31,5 +31,5 @@ resource "aws_sns_topic" "s3-invoice-events" {
 resource "aws_sns_topic_subscription" "s3-invoice-events-sqs-subscription" {
   topic_arn = aws_sns_topic.s3-invoice-events.arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.s3-events-events.arn
+  endpoint  = aws_sqs_queue.s3-invoice-events.arn
 }
